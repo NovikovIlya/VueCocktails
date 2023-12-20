@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const props = defineProps({
   cocktail: {
     type: Object,
@@ -21,7 +22,6 @@ const props = defineProps({
 
 .root {
   width: calc((100% - 76px) / 3);
-  // padding-right:38px;
   margin: 0 auto;
   padding-left: 10px;
 }

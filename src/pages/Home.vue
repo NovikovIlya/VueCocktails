@@ -9,10 +9,12 @@ import CocktailThumb from '../components/CocktailThumb.vue'
 const rootStore = useRootStore()
 const { ingredients, cocktails, ingredientSelect } = storeToRefs(rootStore)
 
-
-
 const getCock = () => {
   rootStore.getCocktails(rootStore.ingredientSelect)
+}
+
+const removeIngredient = ()=>{
+  rootStore.setIngredient(null)
 }
 
 onMounted(() => {
@@ -22,7 +24,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <AppLayout imgUrl="/src/assets/img/cocktail.jpg">
+    <AppLayout :isBackButtonVisible="!!ingredientSelect" :backFunc="removeIngredient" imgUrl="/src/assets/img/cocktail.jpg">
       <div class="wrapper">
         <div v-if="!ingredientSelect || !cocktails" class="info">
           <div class="title">Choose your drink</div>
@@ -79,7 +81,7 @@ onMounted(() => {
   font-size: 30px;
 }
 .info {
-  padding: 80px;
+  padding-top: 80px;
   text-align: center;
 }
 .line {
@@ -96,7 +98,7 @@ onMounted(() => {
 
 .cocktails {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;

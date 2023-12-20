@@ -1,22 +1,42 @@
 <script setup lang="ts">
+import {
+    Back
+} from '@element-plus/icons-vue'
+import {useRoute,useRouter} from 'vue-router'
+
 const props = defineProps({
     imgUrl: {
         type: String,
         required: true,
+    },
+    backFunc:{
+        type: Function,
+        required: true
+    },
+    isBackButtonVisible:{
+        type:Boolean,
+        default: true,
     }
+
 })
+
+
+
+
 </script>
 
 <template>
     <div class="root">
         <div :style="`background-image: url(${props.imgUrl})`" class="img"></div>
         <div class="main">
-            <el-button class="btn">Get random cocktail</el-button>
+            <div class="btns">
+                <el-button v-if="isBackButtonVisible" @click="backFunc" type="primary" :icon="Back" circle class="back"/>
+                <el-button class="btn">Get random cocktail</el-button>
+            </div> 
             <slot/>
         </div>
     </div>
 </template>
-
 
 
 <style lang="scss" scoped>
@@ -48,6 +68,18 @@ const props = defineProps({
     &:hover{
         background-color: $background;
         color: $accent;
+    }
+}
+.btns{
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+}
+.back{
+    background-color: transparent;
+    border-color: white;
+    &:hover{
+        border-color: red;
     }
 }
 </style>
