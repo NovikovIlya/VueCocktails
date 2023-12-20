@@ -3,6 +3,8 @@ import {
     Back
 } from '@element-plus/icons-vue'
 import {useRoute,useRouter} from 'vue-router'
+import { computed } from 'vue';
+import {ROUTER_PATHS} from '../constants/router'
 
 const props = defineProps({
     imgUrl: {
@@ -17,11 +19,19 @@ const props = defineProps({
         type:Boolean,
         default: true,
     }
-
 })
 
+const route = useRoute()
+const router = useRouter()
 
+const routerName = computed(()=>{
+    return route.name
+})
 
+const goForCocktalRandom = ()=>{
+    router.push(ROUTER_PATHS.COCKTAIL_RANDOM)
+    
+}
 
 </script>
 
@@ -31,7 +41,7 @@ const props = defineProps({
         <div class="main">
             <div class="btns">
                 <el-button v-if="isBackButtonVisible" @click="backFunc" type="primary" :icon="Back" circle class="back"/>
-                <el-button class="btn">Get random cocktail</el-button>
+                <el-button @click="goForCocktalRandom" class="btn">Get random cocktail</el-button>
             </div> 
             <slot/>
         </div>
@@ -41,6 +51,7 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 @import '../assets/main.scss';
+
 .root{
     display:flex;
     background-color: $background;
