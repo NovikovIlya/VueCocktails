@@ -6,7 +6,6 @@ import AppLayout from '../components/AppLayout.vue'
 import { COCKTAIL_BY_ID } from '../constants/api'
 
 const route = useRoute()
-const router = useRouter()
 
 const cocktail = ref<any>(null)
 const cocktailId = computed(() => {
@@ -32,9 +31,7 @@ const ingredients = computed(() => {
   return ingredients
 })
 
-const goBack = () => {
-  router.go(-1)
-}
+
 
 onMounted(() => {
   getCoctail()
@@ -43,12 +40,12 @@ onMounted(() => {
 
 <template>
   <div v-if="cocktail" class="wrap">
-    <AppLayout :back-func="goBack" :img-url="cocktail?.strDrinkThumb">
+    <AppLayout  :img-url="cocktail?.strDrinkThumb">
       <div class="wrapper">
         <div class="info">
           <div class="title">{{ cocktail?.strDrink }}</div>
           <div class="line"></div>
-          <div class="list">
+          <div class="list list2">
             <div v-for="item in ingredients" :key="item.name" class="list-item">
               {{ item.name }}
               <template v-if="item.measure">{{ item.measure }}</template>
@@ -67,5 +64,8 @@ onMounted(() => {
 @import '../assets/main.scss';
 .list-item {
   text-align: center;
+}
+.list2{
+  width: 100%;
 }
 </style>

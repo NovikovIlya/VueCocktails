@@ -13,7 +13,6 @@ const props = defineProps({
     },
     backFunc:{
         type: Function,
-        required: true
     },
     isBackButtonVisible:{
         type:Boolean,
@@ -30,7 +29,17 @@ const routerName = computed(()=>{
 
 const goForCocktalRandom = ()=>{
     router.push(ROUTER_PATHS.COCKTAIL_RANDOM)
+    console.log('routerName.value',routerName.value)
+    console.log('ROUTER_PATHS.COCKTAIL_RANDOM',ROUTER_PATHS.COCKTAIL_RANDOM)
     
+    //Если текущая страница - случайный коктейль
+    if(routerName.value === ROUTER_PATHS.COCKTAIL_RANDOM){
+        router.go(0)
+    }
+}
+
+const goBack = ()=>{
+    props.backFunc ? props.backFunc() : router.go(-1)
 }
 
 </script>
@@ -40,7 +49,7 @@ const goForCocktalRandom = ()=>{
         <div :style="`background-image: url(${props.imgUrl})`" class="img"></div>
         <div class="main">
             <div class="btns">
-                <el-button v-if="isBackButtonVisible" @click="backFunc" type="primary" :icon="Back" circle class="back"/>
+                <el-button v-if="isBackButtonVisible" @click="goBack" type="primary" :icon="Back" circle class="back"/>
                 <el-button @click="goForCocktalRandom" class="btn">Get random cocktail</el-button>
             </div> 
             <slot/>

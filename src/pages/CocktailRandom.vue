@@ -3,15 +3,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
 import axios from 'axios'
 import AppLayout from '../components/AppLayout.vue'
-import { COCKTAIL_RANDOM } from '../constants/api'
+import { COCKTAIL_RANDOM,INGREDIENT_PIC } from '../constants/api'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
 
 const route = useRoute()
 const router = useRouter()
 
 const cocktail = ref<any>(null)
-const cocktailId = computed(() => {
-  return route.path.split('/').pop()
-})
 
 const getCoctail = async () => {
   const data = await axios.get(COCKTAIL_RANDOM)
@@ -24,16 +23,21 @@ const ingredients = computed(() => {
     if (!cocktail.value[`strIngredient${i}`]) {
       break
     }
-    const ingredient: any = {}
-    ingredient.name = cocktail.value[`strIngredient${i}`]
-    ingredient.measure = cocktail.value[`strMeasure${i}`]
+    const ingredient = cocktail.value[`strIngredient${i}`]
+   
     ingredients.push(ingredient)
   }
   return ingredients
 })
 
-const goBack = () => {
-  router.go(-1)
+
+
+const onSwiper = ()=>{
+
+}
+
+const onSlideChange = ()=>{
+
 }
 
 onMounted(() => {
@@ -43,12 +47,26 @@ onMounted(() => {
 
 <template>
   <div v-if="cocktail" class="wrap">
-    <AppLayout :back-func="goBack" :img-url="cocktail?.strDrinkThumb">
+    <AppLayout  :img-url="cocktail?.strDrinkThumb">
       <div class="wrapper">
         <div class="info">
           <div class="title">{{ cocktail?.strDrink }}</div>
           <div class="line"></div>
-
+          <div class="slider">
+            <swiper
+              class="swiper"
+              :slides-per-view="3"
+              :space-between="50"
+              @swiper="onSwiper"
+              @slideChange="onSlideChange"
+            >
+              <swiper-slide v-for="ingredient in ingredients" :key="ingredient" >
+                <img :src="`${INGREDIENT_PIC}${ingredient}-Small.png`" alt="logo"/>
+                <div class="name">{{ ingredient }}</div>
+              </swiper-slide>
+             
+            </swiper>
+          </div>
           <div class="instructions">
             {{ cocktail?.strInstructions }}
           </div>
@@ -62,5 +80,14 @@ onMounted(() => {
 @import '../assets/main.scss';
 .list-item {
   text-align: center;
+}
+.slider{
+  padding: 50px 0;
+}
+.swiper{
+  width: 586px;
+}
+.name{
+  padding-top: 20px;
 }
 </style>
